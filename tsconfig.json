@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "es6",
+    "moduleResolution": "Node",
+    "lib": ["dom", "es6"],
+    "sourceMap": true,
+    "jsx": "react",
+    "experimentalDecorators": true,
+    "noEmit": true // stops Visual Studio building files - overridden in Webpack,
+  },
+  "exclude": ["node_modules"],
+  "awesomeTypescriptLoaderOptions": {
+    "forkChecker": true
+  },
+  "compileOnSave": false,
+  "buildOnSave": false
+}
