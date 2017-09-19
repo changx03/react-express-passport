@@ -6,7 +6,7 @@ var CleanWebpackPlugin = require("clean-webpack-plugin");
 
 module.exports = {
   context: __dirname,
-  entry: ["./src/app.jsx"],
+  entry: ["./src/app.tsx"],
   output: {
     path: Path.resolve(__dirname, "build"),
     filename: "[name].bundle.js"
@@ -50,8 +50,12 @@ module.exports = {
       }
     ]
   },
+  resolve: {
+    extensions: ['.jsx', '.js', '.tsx', '.ts']
+  },
   externals: {
-    jquery: "jQuery"
+    jquery: "jQuery",
+    $: "jQuery"
   },
   plugins: [
     new ExtractTextPlugin("[name].css"),
