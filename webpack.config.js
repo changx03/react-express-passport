@@ -2,6 +2,7 @@ var Path = require("path");
 var webpack = require("webpack");
 var HtmlWebpackPlugin = require("html-webpack-plugin");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var BrowserSyncPlugin = require("browser-sync-webpack-plugin");
 
 module.exports = {
   context: __dirname,
@@ -50,6 +51,12 @@ module.exports = {
       beautify: true,
       comments: true,
       sourceMap: true
+    }),
+    new BrowserSyncPlugin({
+      host: "localhost",
+      port: 3000,
+      proxy: "http://localhost:3283/",
+      files: ["build/*.html"]
     })
   ]
 };
