@@ -12,7 +12,7 @@ module.exports = {
     filename: "[name].bundle.js"
     // publicPath: "/dist"
   },
-  devtool: "inline-sourcemap",
+  devtool: "cheap-source-map",
   module: {
     loaders: [
       {
@@ -33,7 +33,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.jsx', '.js', '.tsx', '.ts']
+    extensions: [".jsx", ".js", ".tsx", ".ts"]
   },
   externals: {
     jquery: "jQuery",
