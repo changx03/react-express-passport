@@ -31,3 +31,21 @@ module.exports.createUser = (newUser, callBack) => {
         });
     });
 }
+
+module.exports.getUserByUsername = (username, callBack) => {
+    var query = {
+        username: username
+    };
+    User.findOne(query, callBack);
+}
+
+module.exports.getUserByID = (id, callBack) => {
+    User.findByID(id, callBack);
+}
+
+module.exports.comparePassword = (candidatePassword, hash, callBack) => {
+    bcrypt.compare(candidatePassword, hash, function (err, isMatch) {
+        if (err) throw err;
+        callBack(null, isMatch);
+    });
+}

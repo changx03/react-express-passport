@@ -76,6 +76,7 @@ app.use(function (req, res, next) {
     res.locals.success_msg = req.flash("success_msg");
     res.locals.error_msg = req.flash("error_msg");
     res.locals.error = req.flash("error");
+    res.locals.user = req.user || null;
     next();
 });
 
@@ -101,6 +102,15 @@ app.use(function (err, req, res, next) {
     console.log("Error : " + err.message);
     next();
 });
+
+var ensureAuthenticated = (req, res, next) => {
+    if (req.isAuthenticated())
+        return next();
+    else {
+        req.flash("error_msg", "Your are not logged in");
+        res.redirect("/user/login");
+    }
+}
 
 app.listen(app.get("port"), function () {
     console.log(
