@@ -18,7 +18,9 @@ var app = express();
 
 // bodyParser Middleware
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
 app.use(cookieParser());
 
 // Set static public folder
@@ -26,11 +28,11 @@ app.use(express.static(__dirname + "/build"));
 
 // Express-session
 app.use(
-  session({
-    secret: "This is a secret!",
-    saveUninitialized: true,
-    resave: true
-  })
+    session({
+        secret: "This is a secret!",
+        saveUninitialized: true,
+        resave: true
+    })
 );
 
 // Initialize Passport
@@ -39,33 +41,33 @@ app.use(passport.session());
 
 // Express-validator
 app.use(
-  expressValidator({
-    errorFormatter: function(param, msg, value, location) {
-      var namespace = param.split(","),
-        root = namespace.shift(),
-        formParam = root;
+    expressValidator({
+        errorFormatter: function (param, msg, value, location) {
+            var namespace = param.split(","),
+                root = namespace.shift(),
+                formParam = root;
 
-      while (namespace.length) {
-        formParam += "[" + namespace.shift() + "]";
-      }
-      return {
-        param: fromParam,
-        msg: msg,
-        value: value,
-        location: location
-      };
-    }
-  })
+            while (namespace.length) {
+                formParam += "[" + namespace.shift() + "]";
+            }
+            return {
+                param: fromParam,
+                msg: msg,
+                value: value,
+                location: location
+            };
+        }
+    })
 );
 
 // Connect-flash
 app.use(flash());
 // Global variables for flash
-app.use(function(req, res, next) {
-  res.locals.success_msg = req.flash("success_msg");
-  res.locals.error_msg = req.flash("error_msg");
-  res.locals.error = req.flash("error");
-  next();
+app.use(function (req, res, next) {
+    res.locals.success_msg = req.flash("success_msg");
+    res.locals.error_msg = req.flash("error_msg");
+    res.locals.error = req.flash("error");
+    next();
 });
 
 app.set("port", process.env.PORT || 3283);
@@ -82,19 +84,19 @@ app.use("/register", user);
 //   res.redirect("/welcome");
 // });
 
-app.get(/.*/, function(req, res) {
-  res.sendFile(path.join(__dirname + "/build/index.html"));
+app.get(/.*/, function (req, res) {
+    res.sendFile(path.join(__dirname + "/build/index.html"));
 });
 
-app.use(function(err, req, res, next) {
-  console.log("Error : " + err.message);
-  next();
+app.use(function (err, req, res, next) {
+    console.log("Error : " + err.message);
+    next();
 });
 
-app.listen(app.get("port"), function() {
-  console.log(
-    "Express started on http://localhost:" +
-      app.get("port") +
-      " press Ctrl-C to terminate"
-  );
+app.listen(app.get("port"), function () {
+    console.log(
+        "Express started on http://localhost:" +
+        app.get("port") +
+        " press Ctrl-C to terminate"
+    );
 });
