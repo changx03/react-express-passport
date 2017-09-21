@@ -2,6 +2,7 @@ import * as React from "react";
 
 export class LoginView extends React.Component<{}, any> {
   render() {
+    // TODO: post form, read session
     return (
       <form>
         <div className="form-group">

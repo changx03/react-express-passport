@@ -84,6 +84,18 @@ app.set("port", process.env.PORT || 3283);
 
 app.use("/register", user);
 
+// TODO: change login, logout, register to under /user/ 
+var ensureAuthenticated = (req, res, next) => {
+    if (req.isAuthenticated())
+        return next();
+    else {
+        // req.flash("error_msg", "Your are not logged in");
+        res.redirect("/user/login");
+    }
+}
+
+app.get("/index", ensureAuthenticated(req, res, next));
+
 // app.post("/register", (req, res) => {
 //   var name = req.body.name,
 //     email = req.body.email,
@@ -102,15 +114,6 @@ app.use(function (err, req, res, next) {
     console.log("Error : " + err.message);
     next();
 });
-
-var ensureAuthenticated = (req, res, next) => {
-    if (req.isAuthenticated())
-        return next();
-    else {
-        req.flash("error_msg", "Your are not logged in");
-        res.redirect("/user/login");
-    }
-}
 
 app.listen(app.get("port"), function () {
     console.log(
