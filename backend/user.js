@@ -3,6 +3,8 @@ var {
     check,
     validationResult
 } = require("express-validator/check");
+var User = require("./db.js");
+
 var router = express.Router();
 
 // middleware that is specific to this router
@@ -12,6 +14,7 @@ router.use(function timeLog(req, res, next) {
 });
 
 // req.path in miniapp does not contain entry
+// check each body property with express-validator
 router.post("/", [
     check("name").exists(),
     check("password", "passwords must be at least 5 chars long and contain one number").isLength({
@@ -36,7 +39,27 @@ router.post("/", [
             errors: errors.mapped()
         });
     }
-    res.redirect("/welcome");
+
+    // Save user
+    var dbErr;
+    var newUser = new User({
+        username: name,
+        email: email,
+        password: password
+    });
+    User.createUser(newUser, (err, user) => {
+        if (err) {
+            dbErr = err;
+            console.error(err);
+        } else console.log("Added: " + user);
+    });
+    if (!dbErr) {
+        req.flash("success_msg", "You are registered and can now login.");
+        res.redirect("/login");
+    } else {
+        req.flash("error_msg", dbErr.errmsg);
+        req.flash("error", dbErr);
+    }
 });
 
 module.exports = router;

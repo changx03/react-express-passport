@@ -5,13 +5,22 @@ var bodyParser = require("body-parser");
 var expressValidator = require("express-validator");
 var flash = require("connect-flash");
 var session = require("express-session");
-var mongo = require("mongodb");
-var mongoose = require("mongoose");
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
 var user = require("./backend/user.js");
+var mongoose = require("mongoose");
 
-mongoose.createConnection("mongodb://localhost/loginapp");
+// Mongoose: mpromise (mongoose's default promise library) is deprecated
+mongoose.Promise = global.Promise;
+mongoose.connect("mongodb://localhost/loginapp", {
+    useMongoClient: true
+});
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', () => {
+    // we're connected!
+    console.log("MongoDB is connecting to mongodb://localhost/loginapp");
+});
 
 var app = express();
 // app.disable("x-powered-by");
