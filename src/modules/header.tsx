@@ -16,10 +16,10 @@ export class Header extends React.Component<{}, {}> {
                                 <a className="nav-link" href="/">Home <span className="sr-only">(current)</span></a>
                             </li>
                             <li>
-                                <a className="nav-link" href="/login">Login</a>
+                                <a className="nav-link" href="/user/login">Login</a>
                             </li>
                             <li>
-                                <a className="nav-link" href="/register">Sign up</a>
+                                <a className="nav-link" href="/user/register">Sign up</a>
                             </li>
                             <li>
                                 <a className="nav-link" href="/about">About</a>

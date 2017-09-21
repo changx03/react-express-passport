@@ -47,7 +47,7 @@ module.exports = {
         new ExtractTextPlugin("[name].css"),
         new HtmlWebpackPlugin({
             template: "src/index.html",
-            cache: true
+            cache: true,
         }),
         new webpack.optimize.UglifyJsPlugin({
             compress: false,

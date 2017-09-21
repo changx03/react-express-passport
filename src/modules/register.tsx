@@ -4,7 +4,7 @@ import * as Express from "express";
 export class RegisterView extends React.Component<{}, any> {
     render() {
         return (
-            <form name="register-form" action="register" method="post">
+            <form name="register-form" action="user/register" method="post">
                 <div className="form-group">
                     <label htmlFor="loginName">User name</label>
                     <input

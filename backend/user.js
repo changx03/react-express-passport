@@ -43,18 +43,19 @@ router.post("/", [
     }
 
     // Save user
-    var dbErr;
     var newUser = new User({
         username: name,
         email: email,
         password: password
     });
+
+    var dbErr;
     User.createUser(newUser, (err, user) => {
         if (err) {
-            dbErr = err;
             console.error(err);
         } else console.log("Added: " + user);
     });
+
     if (!dbErr) {
         req.flash("success_msg", "You are registered and can now login.");
         res.redirect("/login");
@@ -85,29 +86,28 @@ passport.use(new LocalStrategy(
     }
 ));
 
-passport.serializeUser(function (user, done) {
-    done(null, user.id);
-});
+// passport.serializeUser(function (user, done) {
+//     done(null, user.id);
+// });
 
-passport.deserializeUser(function (id, done) {
-    User.getUserByID(id, function (err, user) {
-        done(err, user);
-    });
-});
+// passport.deserializeUser(function (id, done) {
+//     User.getUserByID(id, function (err, user) {
+//         done(err, user);
+//     });
+// });
 
+// router.post("/login", passport.authenticate("local", {
+//     successRedirect: "/",
+//     failureRedirect: "/login",
+//     failureFlash: true
+// }), (req, res) => {
+//     res.redirect("/");
+// });
 
-router.post("/login", passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/login",
-    failureFlash: true
-}), (req, res) => {
-    res.redirect("/");
-});
-
-router.get("/logout", (req, res) => {
-    req.logout();
-    req.flash("success_msg", "You have logged out");
-    res.redirect("/user/login");
-});
+// router.get("/logout", (req, res) => {
+//     req.logout();
+//     req.flash("success_msg", "You have logged out");
+//     res.redirect("/user/login");
+// });
 
 module.exports = router;
