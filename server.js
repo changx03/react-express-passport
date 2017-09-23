@@ -10,6 +10,19 @@ var LocalStrategy = require("passport-local").Strategy;
 var user = require("./backend/user.js");
 var mongoose = require("mongoose");
 
+// var webpack = require('webpack');
+// var webpackConfig = require('./webpack.config');
+// var compiler = webpack(webpackConfig);
+
+var app = express();
+// app.disable("x-powered-by");
+
+// app.use(require("webpack-dev-middleware")(compiler, {
+//     noInfo: true, 
+//     publicPath: webpackConfig.output.publicPath
+// }));
+// app.use(require("webpack-hot-middleware")(compiler));
+
 // Mongoose: mpromise (mongoose's default promise library) is deprecated
 mongoose.Promise = global.Promise;
 mongoose.connect("mongodb://localhost/loginapp", {
@@ -21,9 +34,6 @@ db.once('open', () => {
     // we're connected!
     console.log("MongoDB is connecting to mongodb://localhost/loginapp");
 });
-
-var app = express();
-// app.disable("x-powered-by");
 
 // bodyParser Middleware
 const SECRET = "secret cat";
@@ -91,7 +101,7 @@ app.use(function (req, res, next) {
 app.set("port", process.env.PORT || 3283);
 
 // Miniapp handles login, logout and register
-// app.use("/user", user);
+app.use("/user", user);
 
 // TODO: change login, logout, register to under /user/ 
 // var ensureAuthenticated = (req, res, next) => {
@@ -106,7 +116,7 @@ app.set("port", process.env.PORT || 3283);
 // app.get("/index", ensureAuthenticated(req, res, next));
 
 app.get(/.*/, function (req, res) {
-    res.sendFile(path.join(__dirname + "/build/index.html"));
+    res.sendFile(path.join(__dirname + "/index.html"));
 });
 
 app.use(function (err, req, res, next) {

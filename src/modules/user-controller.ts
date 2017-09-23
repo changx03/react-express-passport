@@ -5,11 +5,11 @@ export class UserController {
     @observable errMsg: string;
 
     constructor() {
-        this.user = new User("luke", "luke.csel.co.nz", "PassPass1", "PassPass2");
+        this.user = new User("luke", "luke@csel.co.nz", "PassPass1", "PassPass1");
     }
 
     validation = () => {
-        if(this.user.password.length >= 6 && this.user.password.match(/(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/g)) {
+        if(!(this.user.password.length >= 6 && this.user.password.match(/(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/g))) {
             this.errMsg = "Pasword must at least 6 characters long and contains number and upper case"
         }
         else if(this.user.password != this.user.password2) { this.errMsg = "Passwords do not match"; }

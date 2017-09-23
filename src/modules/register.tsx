@@ -10,9 +10,9 @@ export class RegisterView extends React.Component<{}, any> {
 
         return (
             <div>
-                <div className="alert alert-danger" role="alert">
-                    {errMsg}
-                </div>
+                {
+                    errMsg && <div className="alert alert-danger" role="alert">{errMsg}</div>
+                }
                 <form name="register-form" action="user/register" method="post">
                     <label htmlFor="loginName">User name</label>
                     <input
@@ -63,7 +63,7 @@ export class RegisterView extends React.Component<{}, any> {
     }
 
     validatForm = (): boolean => {
-        if(document.forms["register-form"]["password"].value !== document.forms["register-form"]["password2"].value) {
+        if (document.forms["register-form"]["password"].value !== document.forms["register-form"]["password2"].value) {
             console.log("Passwords must match!");
             return false;
         } else { return true; }

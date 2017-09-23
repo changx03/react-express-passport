@@ -17,8 +17,8 @@ router.use(function timeLog(req, res, next) {
 
 // req.path in miniapp does not contain entry
 // check each body property with express-validator
-router.post("/", [
-    check("name").exists(),
+router.post("/register", [
+    check("username").exists(),
     check("password", "passwords must be at least 5 chars long and contain one number").isLength({
         min: 5
     }).matches(/\d/),
@@ -30,11 +30,11 @@ router.post("/", [
         }),
     check("email", "must be an email").isEmail()
 ], (req, res) => {
-    var name = req.body.name,
+    var username = req.body.username,
         email = req.body.email,
         password = req.body.password;
 
-    console.log(name, email, password);
+    console.log(username, email, password);
     var errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
@@ -44,7 +44,7 @@ router.post("/", [
 
     // Save user
     var newUser = new User({
-        username: name,
+        username: username,
         email: email,
         password: password
     });
