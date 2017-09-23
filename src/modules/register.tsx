@@ -1,18 +1,26 @@
 import * as React from "react";
 import * as Express from "express";
+import userController from "./user-controller";
+import { observer } from "mobx-react";
 
+@observer
 export class RegisterView extends React.Component<{}, any> {
     render() {
+        const { user, errMsg } = userController;
+
         return (
-            <form name="register-form" action="user/register" method="post">
-                <div className="form-group">
+            <div>
+                <div className="alert alert-danger" role="alert">
+                    {errMsg}
+                </div>
+                <form name="register-form" action="user/register" method="post">
                     <label htmlFor="loginName">User name</label>
                     <input
                         type="text"
                         className="form-control"
                         id="loginName"
                         name="name"
-                        defaultValue="Test Name"
+                        value={user.username}
                         required
                     />
                     <label htmlFor="loginEmail">Email</label>
@@ -23,7 +31,7 @@ export class RegisterView extends React.Component<{}, any> {
                         aria-describedby="emailHelp"
                         placeholder="Enter email"
                         name="email"
-                        defaultValue="test@blabla.com"
+                        value={user.email}
                         required
                     />
                     <label htmlFor="loginPassword">Password</label>
@@ -33,7 +41,7 @@ export class RegisterView extends React.Component<{}, any> {
                         id="loginPassword"
                         placeholder="Password"
                         name="password"
-                        defaultValue="checkcheck1"
+                        value={user.password}
                         required
                     />
                     <label htmlFor="loginPasswordConfirm">Confirm password</label>
@@ -43,14 +51,14 @@ export class RegisterView extends React.Component<{}, any> {
                         id="loginPasswordConfirm"
                         placeholder="Password"
                         name="password2"
-                        defaultValue="checkcheck1"
+                        value={user.password2}
                         required
                     />
                     <button type="button" className="btn btn-primary" onClick={this.onClick}>
                         Join
-          </button>
-                </div>
-            </form>
+                    </button>
+                </form>
+            </div>
         );
     }
 
@@ -62,10 +70,13 @@ export class RegisterView extends React.Component<{}, any> {
     }
 
     onClick = (e) => {
-        e.preventDefault();
-        let validation = this.validatForm();
-        if(validation) {
-            document.forms["register-form"].submit();
-        }
+        userController.validation();
+        userController.registerUser();
+
+        // e.preventDefault();
+        // let validation = this.validatForm();
+        // if(validation) {
+        //     document.forms["register-form"].submit();
+        // }
     }
 }
