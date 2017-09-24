@@ -6,22 +6,22 @@ export class UserController {
     @observable status: number = 4;
 
     constructor() {
-        this.user = new User("","","","");
+        this.user = new User("", "", "", "");
     }
 
     validation = () => {
-        if (!(this.user.email && this.user.email.match(/[A-Za-z0-9.-_]+@[A-Za-z0-9_-]+\.[A-Za-z.]{2,6}$/g))) {
+        if(!(this.user.email && this.user.email.match(/[A-Za-z0-9.-_]+@[A-Za-z0-9_-]+\.[A-Za-z.]{2,6}$/g))) {
             this.msg = "Invalid email format.";
         }
-        else if (!(this.user.password && this.user.password.length >= 6 && this.user.password.match(/(?=.*[A-Z])(?=.*[a-z])(?=.*[^A-Za-z])/g))) {
+        else if(!(this.user.password && this.user.password.length >= 6 && this.user.password.match(/(?=.*[A-Z])(?=.*[a-z])(?=.*[^A-Za-z])/g))) {
             this.msg = "Pasword must at least 6 characters long and contains number and upper case"
         }
-        else if (this.user.password !== this.user.password2) { this.msg = "Passwords do not match"; }
+        else if(this.user.password !== this.user.password2) { this.msg = "Passwords do not match"; }
         else { this.msg = ""; }
     }
 
     registerUser = (callback): Promise<any> => {
-        if (!this.msg) {
+        if(!this.msg) {
             fetch("/user/register", {
                 method: "POST",
                 headers: {

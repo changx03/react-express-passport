@@ -71,7 +71,7 @@ export class RegisterView extends React.Component<RouteComponentProps<any>, {}> 
         userController.validation();
         userController.registerUser((status, data) => {
             console.log(status, data);
-            if (userController.status === 2) {
+            if(userController.status === 2) {
                 this.props.history.push("/user/login");
             }
         });

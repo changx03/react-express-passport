@@ -29,7 +29,6 @@ export class Main extends React.Component<any, any> {
 
 class UserModule extends React.Component<RouteComponentProps<any>, any> {
     render() {
-        const { match, location, history } = this.props;
         return (
             <div>
                 <Route exact path={this.props.match.path} component={LoginView} />
@@ -45,9 +44,8 @@ class UserModule extends React.Component<RouteComponentProps<any>, any> {
 
 class UserChildPage extends React.Component<IRouteComponentProps, any> {
     render() {
-        const { match, location, history, id } = this.props;
-
-        switch (id) {
+        const { id } = this.props;
+        switch(id) {
             case "login":
                 return <LoginView />
             case "register":

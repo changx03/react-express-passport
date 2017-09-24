@@ -14,38 +14,38 @@ module.exports = {
     },
     module: {
         loaders: [{
-                test: /\.(ts|tsx)$/,
-                loaders: ["awesome-typescript-loader"]
-            },
-            {
-                test: /\.(js|jsx)$/,
-                use: ["babel-loader"],
-                exclude: /node_modules/
-            },
-            {
-                test: /\.(scss|css)$/,
-                use: ExtractTextPlugin.extract({
-                    use: [{
-                            loader: "css-loader",
-                            options: {
-                                minimize: true
-                            }
-                        },
-                        "sass-loader"
-                    ]
-                })
-            },
-            {
-                test: /\.html$/,
+            test: /\.(ts|tsx)$/,
+            loaders: ["awesome-typescript-loader"]
+        },
+        {
+            test: /\.(js|jsx)$/,
+            use: ["babel-loader"],
+            exclude: /node_modules/
+        },
+        {
+            test: /\.(scss|css)$/,
+            use: ExtractTextPlugin.extract({
                 use: [{
-                    loader: "html-loader",
+                    loader: "css-loader",
                     options: {
-                        minimize: true,
-                        removeComments: true,
-                        collapseWhitespace: true
+                        minimize: true
                     }
-                }]
-            }
+                },
+                    "sass-loader"
+                ]
+            })
+        },
+        {
+            test: /\.html$/,
+            use: [{
+                loader: "html-loader",
+                options: {
+                    minimize: true,
+                    removeComments: true,
+                    collapseWhitespace: true
+                }
+            }]
+        }
         ]
     },
     resolve: {
