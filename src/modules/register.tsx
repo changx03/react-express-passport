@@ -2,6 +2,7 @@ import * as React from "react";
 import * as Express from "express";
 import userController from "./user-controller";
 import { observer } from "mobx-react";
+import Input from "./components/input";
 
 @observer
 export class RegisterView extends React.Component<{}, any> {
@@ -32,7 +33,7 @@ export class RegisterView extends React.Component<{}, any> {
                         keyField="email"
                         type="email"
                         id="loginEmail"
-                        placeHolder="Enter email"
+                        placeHolder="Enter your email"
                         required={true}
                     />
                     <label htmlFor="loginPassword">Password</label>
@@ -72,30 +73,3 @@ export class RegisterView extends React.Component<{}, any> {
     }
 }
 
-@observer
-export class Input extends React.Component<{ controller: any, editItem: string, keyField: string, type: string, id: string, placeHolder: string, required: boolean }, {}> {
-    render() {
-        const { controller, editItem, keyField, type, id, placeHolder, required } = this.props;
-        return (
-            <input
-                type={type}
-                className="form-control"
-                id={id}
-                placeholder={placeHolder}
-                name={id}
-                value={controller[editItem][keyField]}
-                required={required}
-                onChange={this.onChange}
-            />
-        );
-    }
-
-    onChange = (event) => {
-        this.updateProperty(event.target.name, event.target.value)
-    }
-
-    updateProperty(key, value) {
-        const { controller, editItem, keyField } = this.props;
-        controller[editItem][keyField] = value;
-    }
-}
