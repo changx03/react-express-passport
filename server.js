@@ -10,6 +10,8 @@ var LocalStrategy = require("passport-local").Strategy;
 var user = require("./backend/user.js");
 var mongoose = require("mongoose");
 
+debugger;
+
 // var webpack = require('webpack');
 // var webpackConfig = require('./webpack.config');
 // var compiler = webpack(webpackConfig);

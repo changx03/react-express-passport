@@ -9,6 +9,7 @@
         "start": "webpack",
         "build": "set NODE_ENV=production&& webpack --config webpack.production.js",
         "server": "node server.js",
+        "server:debug": "node --inspect --debug-brk server.js",
         "watch": "webpack --watch --progress --profile --colors --display-error-details"
     },
     "devDependencies": {
@@ -36,11 +37,13 @@
         "@types/react": "^16.0.5",
         "@types/react-dom": "^15.5.4",
         "@types/react-router-dom": "^4.0.7",
+        "async": "^2.5.0",
         "babel-cli": "^6.26.0",
         "babel-preset-react": "^6.24.1",
         "bcryptjs": "^2.4.3",
         "body-parser": "^1.18.1",
         "cookie-parser": "^1.4.3",
+        "debug": "^3.0.1",
         "express": "^4.15.4",
         "express-flash": "^0.0.2",
         "express-session": "^1.15.5",

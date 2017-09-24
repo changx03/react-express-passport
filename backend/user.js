@@ -1,3 +1,4 @@
+//@ts-check
 var express = require("express");
 var {
     check,
@@ -6,6 +7,7 @@ var {
 var User = require("./db.js");
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
+var async = require("async");
 
 var router = express.Router();
 
@@ -34,10 +36,12 @@ router.post("/register", [
         email = req.body.email,
         password = req.body.password;
 
+    // check validation
     console.log(username, email, password);
     var errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(422).json({
+        return res.status(422).json({   // 422 unprocessable entity
+            success: false,
             errors: errors.mapped()
         });
     }
@@ -49,20 +53,22 @@ router.post("/register", [
         password: password
     });
 
-    var dbErr;
     User.createUser(newUser, (err, user) => {
-        if (err) {
-            console.error(err);
-        } else console.log("Added: " + user);
+        if (err && err.name === 'MongoError' && err.code === 11000) {
+            return res.status(422).json({
+                success: false,
+                msg: "The username or email already exists. Please try another one."
+            });
+        }
+        else {
+            console.log("Added: " + user);
+            // Success
+            return res.status(201).json({
+                success: true,
+                msg: "You are registered and can now login."
+            });
+        }
     });
-
-    if (!dbErr) {
-        req.flash("success_msg", "You are registered and can now login.");
-        res.redirect("/login");
-    } else {
-        req.flash("error_msg", dbErr.errmsg);
-        req.flash("error", dbErr);
-    }
 });
 
 passport.use(new LocalStrategy(

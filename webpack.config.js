@@ -1,9 +1,7 @@
 var Path = require("path");
 var webpack = require("webpack");
-var HtmlWebpackPlugin = require("html-webpack-plugin");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var BrowserSyncPlugin = require("browser-sync-webpack-plugin");
-var CleanWebpackPlugin = require("clean-webpack-plugin");
 
 module.exports = {
     context: __dirname,
@@ -11,9 +9,9 @@ module.exports = {
     output: {
         path: Path.resolve(__dirname, "build"),
         filename: "[name].bundle.js",
-        publicPath: "/dist"
+        publicPath: "/build"
     },
-    devtool: "cheap-source-map",
+    devtool: "cheap-module-source-map",
     module: {
         loaders: [{
             test: /\.tsx?$/,
@@ -38,8 +36,6 @@ module.exports = {
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': '"development"',
         }),
-        new ExtractTextPlugin("[name].css"),
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoEmitOnErrorsPlugin()
+        new ExtractTextPlugin("[name].css")
     ]
 };
