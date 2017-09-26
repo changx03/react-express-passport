@@ -2,6 +2,7 @@ var Path = require("path");
 var webpack = require("webpack");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var BrowserSyncPlugin = require("browser-sync-webpack-plugin");
+var CleanWebpackPlugin = require("clean-webpack-plugin");
 
 module.exports = {
     context: __dirname,
@@ -11,18 +12,18 @@ module.exports = {
         filename: "[name].bundle.js",
         publicPath: "/build"
     },
-    devtool: "cheap-module-source-map",
+    devtool: "eval",
     module: {
         loaders: [{
-            test: /\.tsx?$/,
-            loaders: ["awesome-typescript-loader"]
-        },
-        {
-            test: /\.(scss|css)$/,
-            use: ExtractTextPlugin.extract({
-                use: ["css-loader", "sass-loader"]
-            })
-        }
+                test: /\.tsx?$/,
+                loaders: ["awesome-typescript-loader"]
+            },
+            {
+                test: /\.(scss|css)$/,
+                use: ExtractTextPlugin.extract({
+                    use: ["css-loader", "sass-loader"]
+                })
+            }
         ]
     },
     resolve: {
@@ -33,6 +34,7 @@ module.exports = {
         $: "jQuery"
     },
     plugins: [
+        new CleanWebpackPlugin(["build"]),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': '"development"',
         }),

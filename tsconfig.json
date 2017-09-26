@@ -14,7 +14,8 @@
         "sourceMap": true,
         "allowJs": true,
         "jsx": "react",
-        "experimentalDecorators": true
+        "experimentalDecorators": true,
+        "mapRoot": "./src"
     },
     "exclude": [
         "node_modules"

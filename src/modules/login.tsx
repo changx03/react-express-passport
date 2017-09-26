@@ -47,7 +47,7 @@ export class LoginView extends React.Component<any, any> {
     }
 
     onClick = (e) => {
-        // e.preventDefault();
+        e.preventDefault();
         // document.forms["login-form"].submit();
         userController.login((status, data) => {
             console.log(status, data);
