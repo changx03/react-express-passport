@@ -40,7 +40,7 @@ router.post("/register", [
     console.log(username, email, password);
     var errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(422).json({   // 422 unprocessable entity
+        return res.status(422).json({ // 422 unprocessable entity
             success: false,
             errors: errors.mapped()
         });
@@ -59,8 +59,7 @@ router.post("/register", [
                 success: false,
                 msg: "The username or email already exists. Please try another one."
             });
-        }
-        else {
+        } else {
             console.log("Added: " + user);
             // Success
             return res.status(201).json({
@@ -73,42 +72,51 @@ router.post("/register", [
 
 passport.use(new LocalStrategy(
     (username, password, done) => {
+        console.log("username: ", username, "password: ", password);
         User.getUserByUserName(username, (err, user) => {
-            if (err) throw err;
+            if (err) return done(err);
             if (!user) {
+                console.log("Unknown user");
                 return done(null, false, {
                     message: "Unknown user"
                 });
             }
+            console.log("Found user:" + username);
+            console.log("password:", password, user.password);
             User.comparePassword(password, user.password, (err, isMatch) => {
-                if (isMatch)
+                if (err) return done(err);
+                if (isMatch) {
+                    console.log("Found match");
                     return done(null, user);
-                else
+                } else {
+                    console.log("Invalid password");
                     return done(null, false, {
                         message: "Invalid password"
                     });
+                }
             })
         })
     }
 ));
 
-// passport.serializeUser(function (user, done) {
-//     done(null, user.id);
-// });
+passport.serializeUser(function (user, done) {
+    done(null, user.id);
+});
 
-// passport.deserializeUser(function (id, done) {
-//     User.getUserByID(id, function (err, user) {
-//         done(err, user);
-//     });
-// });
+passport.deserializeUser(function (id, done) {
+    User.getUserByID(id, function (err, user) {
+        done(err, user);
+    });
+});
 
-// router.post("/login", passport.authenticate("local", {
-//     successRedirect: "/",
-//     failureRedirect: "/login",
-//     failureFlash: true
-// }), (req, res) => {
-//     res.redirect("/");
-// });
+router.post("/login", passport.authenticate("local", {
+    successRedirect: "/welcome",
+    failureRedirect: "/user/login",
+    failureFlash: true,
+    successFlash: true
+}), (req, res) => {
+    res.redirect(`/welcome`);
+});
 
 // router.get("/logout", (req, res) => {
 //     req.logout();

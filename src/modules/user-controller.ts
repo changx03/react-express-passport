@@ -38,6 +38,21 @@ export class UserController {
             });
         } else { return Promise.reject(new Error("Fail to post")); }
     }
+
+    login = (callback) => {
+        fetch("/user/login", {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ username: this.user.username, password: this.user.password })
+        }).then(response => {
+            response.json().then(data => {
+                callback(response.status, data);
+            })
+        });
+    }
 }
 
 export class User {

@@ -1,14 +1,15 @@
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var bodyParser = require("body-parser");
-var expressValidator = require("express-validator");
-var flash = require("express-flash");
-var session = require("express-session");
-var passport = require("passport");
-var LocalStrategy = require("passport-local").Strategy;
-var user = require("./backend/user.js");
-var mongoose = require("mongoose");
+const express = require("express");
+const path = require("path");
+const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
+const expressValidator = require("express-validator");
+const flash = require("express-flash");
+const session = require("express-session");
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+const user = require("./backend/user.js");
+const mongoose = require("mongoose");
+const MongoStore = require("connect-mongo")(session);
 
 // debugger;
 
@@ -16,9 +17,11 @@ var mongoose = require("mongoose");
 // var webpackConfig = require('./webpack.config');
 // var compiler = webpack(webpackConfig);
 
-var app = express();
+const app = express();
 const SECRET = "secret cat";
 const PORT = 3283;
+app.set("port", process.env.PORT || PORT);
+
 // app.disable("x-powered-by");
 
 // app.use(require("webpack-dev-middleware")(compiler, {
@@ -32,7 +35,7 @@ mongoose.Promise = global.Promise;
 mongoose.connect("mongodb://localhost/loginapp", {
     useMongoClient: true
 });
-var db = mongoose.connection;
+const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {
     // we're connected!
@@ -43,7 +46,7 @@ db.once('open', () => {
     // const sessionStore = new session.MemoryStore;
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({
-        extended: false
+        extended: true 
     }));
 
     // Set static public folder
@@ -54,9 +57,13 @@ db.once('open', () => {
     app.use(
         session({
             cookie: {
-                maxAge: 60000
+                maxAge: 60000, // session should not apply maxAge nor expires, Used by FlashMessage
+                sameSite: true, // apply SameSite tag
+                secure: false // Should be true in production. Use HTTPS. default to false
             },
-            // store: sessionStore,
+            store: new MongoStore({
+                mongooseConnection: db
+            }),
             secret: SECRET,
             saveUninitialized: true,
             resave: true
@@ -67,7 +74,17 @@ db.once('open', () => {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    app.set("port", process.env.PORT || PORT);
+    // Connect-flash
+    app.use(flash());
+
+    // // Global variables for flash
+    // app.use(function (req, res, next) {
+    //     // res.locals.success_msg = req.flash("success_msg");
+    //     // res.locals.error_msg = req.flash("error_msg");
+    //     res.locals.error = req.flash("error");
+    //     res.locals.user = req.user || null;
+    //     next();
+    // });
 
     // Miniapp handles login, logout and register
     app.use("/user", user);
@@ -110,17 +127,6 @@ db.once('open', () => {
 //         }
 //     })
 // );
-
-// Connect-flash
-// app.use(flash());
-// // Global variables for flash
-// app.use(function (req, res, next) {
-//     res.locals.success_msg = req.flash("success_msg");
-//     res.locals.error_msg = req.flash("error_msg");
-//     res.locals.error = req.flash("error");
-//     res.locals.user = req.user || null;
-//     next();
-// });
 
 // TODO: change login, logout, register to under /user/ 
 // var ensureAuthenticated = (req, res, next) => {
